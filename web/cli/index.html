@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            margin: 0;
+        }
+
+        #main {
+            width: 100%;
+            max-width: 430px;
+            text-align: center;
+        }
+
+        table {
+            margin: auto;
+        }
+
+        table tr {
+            text-align: center;
+        }
+
+        td,
+        th {
+            padding: 0 10px;
+            width: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <h1>Install Warpdl CLI</h1>
+        <div style="padding: 4px;">
+            <code>(curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.warpdl.org/install.sh || wget -t 3 -qO- https://cli.warpdl.org/install.sh) | sh</code>
+        </div>
+        <h4>
+            <a href="https://github.com/warpdl/warp-releases/">Repo</a>
+        </h4>
+        <div id="table">
+            <table>
+                <thead>
+                    <th>OS</th>
+                    <th>Architecture</th>
+                    <th>Format</th>
+                </thead>
+                <tr>
+                    <td>all</td>
+                    <td>all</td>
+                    <td>
+                        <a href="https://cli.warpdl.org/install.sh">sh</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
