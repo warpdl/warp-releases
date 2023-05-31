@@ -2,6 +2,10 @@
 
 This repository contains releases for warp download manager.
 
+<a href="https://fury.co/f/partner">
+  <img src="//badge.fury.io/fp/gemfury.svg" alt="Private Repository">
+</a>
+
 ## Installaion
 
 
