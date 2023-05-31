@@ -6,7 +6,12 @@ set -e
 # 1 general
 # 2 insufficient perms
 
-WARP_DOMAIN="cli.warpdl.org"
+LATEST_RELEASE="0.0.5"
+# both os and arch are set to unknown by default
+OS="unknown"
+ARCH="unknown"
+DL_FILENAME="warp_${LATEST_RELEASE}"
+GITHUB_RELEASES_BASE_URL="https://github.com/warpdl/warp-releases/releases/download/${LATEST_RELEASE}/"
 DEBUG=0
 INSTALL=1
 CLEAN_EXIT=0
@@ -29,6 +34,7 @@ cleanup() {
 
   if [ -n "$tempdir" ]; then
     delete_tempdir
+    echo ""
   fi
 
   clean_exit "$exit_code"
@@ -150,7 +156,7 @@ curl_download() {
 
   if [ "$status_code" -eq 200 ]; then
     if [ "$component" = "Binary" ]; then
-      parse_version_header "$headers"
+      parse_version_header
     fi
   fi
 
@@ -209,7 +215,7 @@ wget_download() {
 
   if [ "$status_code" -eq 200 ]; then
     if [ "$component" = "Binary" ]; then
-      parse_version_header "$headers"
+      parse_version_header
     fi
   fi
 
@@ -218,10 +224,8 @@ wget_download() {
 }
 
 parse_version_header() {
-  headers="$1"
-  tag=$(echo "$headers" | sed -n 's/^[[:space:]]*x-cli-version: \(v[0-9]*\.[0-9]*\.[0-9]*\)[[:space:]]*$/\1/p')
-  if [ -n "$tag" ]; then
-    log_debug "Downloaded CLI $tag"
+  if [ -n "$latest_version" ]; then
+    log_debug "Downloaded CLI $latest_version"
   fi
 }
 
@@ -292,15 +296,14 @@ if [ "$find_install_path_arg" -eq 1 ]; then
 fi
 
 # identify OS
-os="unknown"
 uname_os=$(uname -s)
 case "$uname_os" in
-  Darwin)    os="macos"   ;;
-  Linux)     os="linux"   ;;
-  FreeBSD)   os="freebsd" ;;
-  OpenBSD)   os="openbsd" ;;
-  NetBSD)    os="netbsd"  ;;
-  *MINGW64*) os="windows" ;;
+  Darwin)    OS="macos"   ;;
+  Linux)     OS="linux"   ;;
+  FreeBSD)   OS="freebsd" ;;
+  OpenBSD)   OS="openbsd" ;;
+  NetBSD)    OS="netbsd"  ;;
+  *MINGW64*) OS="windows" ;;
   *)
     log "ERROR: Unsupported OS '$uname_os'"
     log ""
@@ -313,19 +316,18 @@ esac
 log_debug "Detected OS '$os'"
 
 # identify arch
-arch="unknown"
 uname_machine=$(uname -m)
 if [ "$uname_machine" = "i386" ] || [ "$uname_machine" = "i686" ]; then
-  arch="i386"
+  ARCH="i386"
 elif [ "$uname_machine" = "amd64" ] || [ "$uname_machine" = "x86_64" ]; then
-  arch="amd64"
+  ARCH="amd64"
 elif [ "$uname_machine" = "armv6" ] || [ "$uname_machine" = "armv6l" ]; then
-  arch="armv6"
+  ARCH="armv6"
 elif [ "$uname_machine" = "armv7" ] || [ "$uname_machine" = "armv7l" ]; then
-  arch="armv7"
+  ARCH="armv7"
 # armv8?
 elif [ "$uname_machine" = "arm64" ] || [ "$uname_machine" = "aarch64" ]; then
-  arch="arm64"
+  ARCH="arm64"
 else
   log "ERROR: Unsupported architecture '$uname_machine'"
   log ""
@@ -337,15 +339,16 @@ fi
 log_debug "Detected architecture '$arch'"
 
 # identify format
-if [ "$os" = "windows" ]; then
+if [ "$OS" = "windows" ]; then
   format="zip"
 else
-  format="tar"
+  format="tar.gz"
 fi
 
 log_debug "Detected format '$format'"
 
-url="https://$WARP_DOMAIN/download?os=$os&arch=$arch&format=$format"
+DL_FILENAME="${DL_FILENAME}_${OS}_${ARCH}.$format"
+url="${GITHUB_RELEASES_BASE_URL}${DL_FILENAME}"
 
 set +e
 curl_binary="$(command -v curl)"
@@ -366,7 +369,7 @@ if [ "$curl_installed" -eq 0 ] || [ "$wget_installed" -eq 0 ]; then
   log_debug "Using temp directory $tempdir"
 
   log "Downloading Warpdl CLI"
-  file="warpdl-download"
+  file="${DL_FILENAME}"
   filename="$tempdir/$file"
 
   if [ "$curl_installed" -eq 0 ]; then
@@ -389,10 +392,10 @@ else
   clean_exit 1
 fi
 
-if [ "$format" = "tar" ] || [ "$format" = "zip" ]; then
-  if [ "$format" = "tar" ]; then
-    mv -f "$filename" "$filename.tar.gz"
-    filename="$filename.tar.gz"
+if [ "$format" = "tar.gz" ] || [ "$format" = "zip" ]; then
+  if [ "$format" = "tar.gz" ]; then
+    filename="${tempdir}/${DL_FILENAME}"
+    echo $filename
 
     # extract
     extract_dir="$tempdir/x"
