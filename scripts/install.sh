@@ -6,7 +6,7 @@ set -e
 # 1 general
 # 2 insufficient perms
 
-LATEST_RELEASE="0.0.14"
+LATEST_RELEASE="0.0.19"
 # both os and arch are set to unknown by default
 OS="unknown"
 ARCH="unknown"
@@ -313,7 +313,7 @@ case "$uname_os" in
     ;;
 esac
 
-log_debug "Detected OS '$os'"
+log_debug "Detected OS '$OS'"
 
 # identify arch
 uname_machine=$(uname -m)
@@ -336,7 +336,7 @@ else
   clean_exit 1
 fi
 
-log_debug "Detected architecture '$arch'"
+log_debug "Detected architecture '$ARCH'"
 
 # identify format
 if [ "$OS" = "windows" ]; then
@@ -395,7 +395,6 @@ fi
 if [ "$format" = "tar.gz" ] || [ "$format" = "zip" ]; then
   if [ "$format" = "tar.gz" ]; then
     filename="${tempdir}/${DL_FILENAME}"
-    echo $filename
 
     # extract
     extract_dir="$tempdir/x"
