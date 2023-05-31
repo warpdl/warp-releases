@@ -4,6 +4,9 @@ This repository contains releases for warp download manager.
 
 ## Installaion
 
+
+Latest release can be found here: [release](https://github.com/warpdl/warp-releases/releases/latest)
+
 ### [Homebrew](https://github.com/warpdl/homebrew-tap)
 
 ```bash
