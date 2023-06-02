@@ -14,20 +14,22 @@ Latest release can be found here: [release](https://github.com/warpdl/warp-relea
 ### [Homebrew](https://github.com/warpdl/homebrew-tap)
 
 ```bash
-brew install warpdl/tap/warpdl
+$ brew install warpdl/tap/warpdl
 ```
 
 ### [Scoop](https://github.com/warpdl/scoop-bucket)
 
 ```bash
-scoop bucket add doppler https://github.com/warpdl/scoop-bucket.git
-scoop install warpdl
+$ scoop bucket add warpdl https://github.com/warpdl/scoop-bucket.git
+$ scoop install warpdl
 ```
 
 ### [Installation script](https://cli.warpdl.org/install.sh)
 
 ```bash
-(curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.warpdl.org/install.sh || wget -t 3 -qO- https://cli.warpdl.org/install.sh) | sh
+$ (curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.warpdl.org/install.sh || wget -t 3 -qO- https://cli.warpdl.org/install.sh) | sh
 ```
+
+For more details, take a look at [installation instructions](INSTALL.md).
 
 You can find all installation instructions [here](https://cli.warpdl.org/).
