@@ -55,13 +55,13 @@ Use the [Shell Script](#shell-script) installation method.
 
 ```bash
 # install necessary packages
-$ apt-get update && apt-get install ca-certificates curl gnupg -y
+$ sudo apt-get update && sudo apt-get install ca-certificates curl gnupg -y
 
 # add apt gpg key
-$ curl -fsSL https://repo.warpdl.org/apt/gpg.key | gpg --dearmor -o /etc/apt/keyrings/warpdl.gpg
+$ curl -fsSL https://repo.warpdl.org/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/warpdl.gpg
 
 # add apt repo
-$ echo "deb [signed-by=/etc/apt/keyrings/warpdl.gpg] https://repo.warpdl.org/apt/ /" > /etc/apt/sources.list.d/warpdl.list
+$ echo "deb [signed-by=/etc/apt/keyrings/warpdl.gpg] https://repo.warpdl.org/apt/ /" | sudo tee /etc/apt/sources.list.d/warpdl.list
 
 # install latest warp package
 $ sudo apt-get install warp
