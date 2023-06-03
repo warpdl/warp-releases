@@ -83,7 +83,7 @@ $ sudo apt-get update && sudo apt-get upgrade warp
 $ sudo rpm --import 'https://repo.warpdl.org/rpm/gpg.key'
 
 # add yum config
-$ curl -sLf --retry 3 --tlsv1.2 --proto "=https" 'https://repo.warpdl.org/rpm/config.rpm.txt' | sudo tee /etc/yum.repos.d/warpdl.repo
+$ curl -sLf --retry 3 --tlsv1.2 --proto "=https" 'https://raw.githubusercontent.com/warpdl/warp-releases/main/configs/rpm/config.rpm.txt' | sudo tee /etc/yum.repos.d/warpdl.repo
 
 # install latest warp package
 $ sudo yum update && sudo yum install warp
